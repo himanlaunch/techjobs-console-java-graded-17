@@ -9,7 +9,6 @@ public class TechJobs {
 
     public static void main (String[] args) {
 
-
         HashMap<String, String> columnChoices = new HashMap<>();
         columnChoices.put("core competency", "Skill");
         columnChoices.put("employer", "Employer");
