@@ -10,9 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.HashSet;
-/**
- * Created by LaunchCode
- */
+
 public class JobData {
 
     private static final String DATA_FILE = "src/main/resources/job_data.csv";
@@ -20,16 +18,10 @@ public class JobData {
 
     private static ArrayList<HashMap<String, String>> allJobs;
 
-    /**
-     * Fetch list of all values from loaded data,
-     * without duplicates, for a given column.
-     *
-     * @param field The column to retrieve values from
-     * @return List of all of the values of the given field
-     */
+
     public static ArrayList<String> findAll(String field) {
 
-        // load data, if not already loaded
+
         loadData();
 
         ArrayList<String> values = new ArrayList<>();
@@ -47,39 +39,30 @@ public class JobData {
 
     public static ArrayList<HashMap<String, String>> findAll() {
 
-        // load data, if not already loaded
+
         loadData();
 
         return allJobs;
     }
 
-    /**
-     * Returns results of search the jobs data by key/value, using
-     * inclusion of the search term.
-     *
-     * For example, searching for employer "Enterprise" will include results
-     * with "Enterprise Holdings, Inc".
-     *
-     * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
-     * @return List of all jobs matching the criteria
-     */
+
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
 
         loadData();
 
-        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+        HashSet<HashMap<String, String>> uniqueJobs = new HashSet<>();
 
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
 
             if (aValue != null && aValue.toLowerCase().contains(value.toLowerCase())) {
-                jobs.add(row);
+                uniqueJobs.add(row);
             }
         }
 
-        return jobs;
+
+        return new ArrayList<>(uniqueJobs);
     }
 
     /**
@@ -114,9 +97,7 @@ public class JobData {
     }
 
 
-    /**
-     * Read in data from a CSV file and store it in a list
-     */
+
     private static void loadData() {
 
         // Only load data once
@@ -126,7 +107,7 @@ public class JobData {
 
         try {
 
-            // Open the CSV file and set up pull out column header info and records
+
             Reader in = new FileReader(DATA_FILE);
             CSVParser parser = CSVFormat.RFC4180.withFirstRecordAsHeader().parse(in);
             List<CSVRecord> records = parser.getRecords();
@@ -135,7 +116,7 @@ public class JobData {
 
             allJobs = new ArrayList<>();
 
-            // Put the records into a more friendly format
+
             for (CSVRecord record : records) {
                 HashMap<String, String> newJob = new HashMap<>();
 
@@ -146,7 +127,7 @@ public class JobData {
                 allJobs.add(newJob);
             }
 
-            // flag the data as loaded, so we don't do it twice
+
             isDataLoaded = true;
 
         } catch (IOException e) {
